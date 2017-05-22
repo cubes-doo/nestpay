@@ -215,8 +215,6 @@ class NestpayApi {
 			fclose($verbose);
 			
 			$this->setLastRequestLog($requestLog);
-			
-			echo $requestLog;
 		}
 		
 		if ($response === false) {
