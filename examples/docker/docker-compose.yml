@@ -1,0 +1,16 @@
+db:
+    container_name: "${COMPOSE_PROJECT_NAME}_db"
+    image: mariadb:latest
+    env_file: .env
+webserver:
+    container_name: "${COMPOSE_PROJECT_NAME}_webserver"
+    image: cubesdoo/php
+    ports:
+        - "127.0.0.1:$EXTERNAL_PORT:80"
+    volumes:
+        - ../../:/var/www/
+        - ./vhost.conf:/etc/apache2/sites-enabled/000-default.conf
+    links:
+        - db
+    working_dir: /var/www
+    env_file: .env

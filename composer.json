@@ -1,0 +1,22 @@
+{
+    "name": "cubes-doo/nestpay",
+    "type": "library",
+    "description": "Nestpay e-commerce integration",
+    "authors": [
+        {
+            "name": "Aleksandar Dimic",
+            "email": "aleksandar.dimic@cubes.rs"
+        }
+    ],
+    "license": "GPL",
+    "keywords": ["nestpay", "php", "composer"],
+    "homepage": "https://github.com/cubes-doo/nestpay",
+    "require": {
+		"php": ">=5.4"
+	},
+	"autoload": {
+		"psr-4": {
+            "Cubes\\Nestpay\\": "src/"
+        }
+	}
+}
