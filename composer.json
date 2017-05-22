@@ -12,11 +12,12 @@
     "keywords": ["nestpay", "php", "composer"],
     "homepage": "https://github.com/cubes-doo/nestpay",
     "require": {
-		"php": ">=5.4"
-	},
-	"autoload": {
-		"psr-4": {
+        "php": ">=5.4",
+		"ext-curl": "*"
+    },
+    "autoload": {
+        "psr-4": {
             "Cubes\\Nestpay\\": "src/"
         }
-	}
+    }
 }
