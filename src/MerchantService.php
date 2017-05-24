@@ -454,11 +454,12 @@ class MerchantService {
 	 * 
 	 * @param array $responseData the $_POST data from 3D Gate
 	 * @param boolean $fromFailUrl Weather process is called from failUrl page or not
+	 * @param boolean $triggerEvents Trigger events "onPaymentSuccess", "onPaymentFailed", "onError" or NOT
 	 * @param boolean $throwException Weather to throw exception on error or just trigger error event 
 	 * @return \Cubes\Nestpay\Payment
 	 * @throws \Exception
 	 */
-	public function paymentProcess3DGateResponse(array $responseData, $fromFailUrl = false, $throwException = true) {
+	public function paymentProcess3DGateResponse(array $responseData, $fromFailUrl = false, $triggerEvents = true, $throwException = true) {
 		
 		$clientId = $this->getClientId();
 		$storeKey = $this->getStoreKey();
@@ -562,13 +563,17 @@ class MerchantService {
 			
 			$workingPayment->setProcessed(1);
 			
+			$this->savePayment($workingPayment);
+			
+			if (!$triggerEvents) {
+				return $workingPayment;
+			}
+			
 			if ($workingPayment->isSuccess() && !$fromFailUrl) {
 				$this->triggerEvent('paymentSuccess');
 			} else {
 				$this->triggerEvent('paymentFailed');
 			}
-			
-			$this->savePayment($workingPayment);
 			
 			return $workingPayment;
 			
@@ -580,7 +585,9 @@ class MerchantService {
 				$this->setWorkingPayment($responseData);
 			}
 			
-			$this->triggerEvent('error');
+			if ($triggerEvents) {
+				$this->triggerEvent('error');
+			}
 			
 			if ($throwException) {
 				throw $e;
