@@ -79,6 +79,7 @@ class Payment implements \ArrayAccess, \JsonSerializable {
 		'mdStatus',
 		'email',
 		'tel',
+		'description',
 		'BillToCompany',
 		'BillToName',
 		'BillToStreet1',
@@ -131,7 +132,8 @@ class Payment implements \ArrayAccess, \JsonSerializable {
 		'mdErrorMsg',
 		'TRANID',
 		'clientid',
-		'EXTRA_TRXDATE'
+		'EXTRA_TRXDATE',
+		'comments'
 	];
 	
 	public static function getAllowedProperties() {
