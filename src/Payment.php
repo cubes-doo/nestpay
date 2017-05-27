@@ -291,7 +291,7 @@ class Payment implements \ArrayAccess, \JsonSerializable {
 		
 		if ($onlyNonEmpty) {
 			foreach ($properties as $key => $val) {
-				if (!is_numeric && empty($val)) {
+				if (!is_numeric($val) && empty($val)) {
 					unset($properties[$key]);
 				}
 			}
