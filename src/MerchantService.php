@@ -457,6 +457,7 @@ class MerchantService {
 	 * @param boolean $triggerEvents Trigger events "onPaymentSuccess", "onPaymentFailed", "onError" or NOT
 	 * @param boolean $throwException Weather to throw exception on error or just trigger error event 
 	 * @return \Cubes\Nestpay\Payment
+	 * @throws \Cubes\Nestpay\PaymentAlreadyProcessedException
 	 * @throws \Exception
 	 */
 	public function paymentProcess3DGateResponse(array $responseData, $fromFailUrl = false, $triggerEvents = true, $throwException = true) {
@@ -558,7 +559,7 @@ class MerchantService {
 			}
 			
 			if ($workingPayment->isProcessed()) {
-				throw new MerchantServiceException('Payment is already processed!');
+				throw new PaymentAlreadyProcessedException('Payment is already processed!');
 			}
 			
 			$workingPayment->setProcessed(1);
