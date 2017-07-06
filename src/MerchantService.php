@@ -629,8 +629,7 @@ class MerchantService {
 			
 			if (!is_array($paymentData)) {
 				//payment not found on nestpay
-				$workingPayment->setProcessed(1);
-				$this->savePayment($workingPayment);
+				//just return payment as is without saving
 				
 				return $workingPayment;
 			}
