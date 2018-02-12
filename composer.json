@@ -8,7 +8,7 @@
             "email": "aleksandar.dimic@cubes.rs"
         }
     ],
-    "license": "GPL",
+    "license": "GPL-3.0-or-later",
     "keywords": ["nestpay", "php", "composer"],
     "homepage": "https://github.com/cubes-doo/nestpay",
     "require": {
