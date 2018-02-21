@@ -511,7 +511,7 @@ class Payment implements \ArrayAccess, \JsonSerializable {
 	 * @return boolean
 	 */
 	public function isSuccess() {
-		$response = $this->getProperty('Response');
+		$response = ucfirst(strtolower($this->getProperty('Response')));
 		$procReturnCode = $this->getProperty('ProcReturnCode');
 		$mdStatus = $this->getProperty('mdStatus');
 		
