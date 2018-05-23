@@ -133,7 +133,28 @@ class Payment implements \ArrayAccess, \JsonSerializable {
 		'TRANID',
 		'clientid',
 		'EXTRA_TRXDATE',
-		'comments'
+		'comments',
+		
+		'ACQBIN',
+		'acqStan',
+		'cavvAlgorithm',
+		'digest',
+		'dsId',
+		'Ecom_Payment_Card_ExpDate_Month',
+		'Ecom_Payment_Card_ExpDate_Year',
+		'EXTRA.CARDBRAND',
+		'EXTRA.CARDISSUER',
+		'EXTRA.INVOICENUMBER',
+		'EXTRA.TRXDATE',
+		'failUrl',
+		'HASH',
+		'hashAlgorithm',
+		'HASHPARAMS',
+		'HASHPARAMSVAL',
+		'okurl',
+		'payResults.dsId',
+		'refreshtime',
+		'SettleId',
 	];
 	
 	public static function getAllowedProperties() {
