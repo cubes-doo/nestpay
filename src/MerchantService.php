@@ -542,7 +542,8 @@ class MerchantService {
 						continue;
 					}
 					
-					if (isset($workingPayment[$key])) {
+					if (isset($workingPayment[$key]) && (is_numeric($workingPayment[$key]) || !empty($workingPayment[$key]))) {
+						
 						continue;
 					}
 					
