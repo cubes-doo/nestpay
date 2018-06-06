@@ -535,7 +535,7 @@ class Payment implements \ArrayAccess, \JsonSerializable {
 		$procReturnCode = $this->getProperty('ProcReturnCode');
 		$mdStatus = $this->getProperty('mdStatus');
 		
-		if (is_numeric($mdStatus) && !in_array(((int) $mdStatus), [1, 2, 3, 4])) {
+		if (is_numeric($mdStatus) && !in_array(((int) $mdStatus), [1, 2, 3, 4, 7])) {
 			return false;
 		}
 		
