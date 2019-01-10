@@ -6,6 +6,10 @@
         {
             "name": "Aleksandar Dimic",
             "email": "aleksandar.dimic@cubes.rs"
+        },
+        {
+            "name": "Aleksa Cvijic",
+            "email": "aleksa.cvijic@cubes.rs"
         }
     ],
     "license": "GPL-3.0-or-later",
