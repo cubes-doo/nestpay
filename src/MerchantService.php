@@ -228,6 +228,28 @@ class MerchantService {
 	}
 	
 	/**
+	 * @param array $properties
+	 * @return \Cubes\Nestpay\Payment
+	 */
+	protected function createPayment($properties) {
+		$paymentDao = $this->getPaymentDao();
+		
+		if (!isset($properties['oid'])) {
+			$properties['oid'] = PaymentStandard::generateOid();
+		}
+
+		if (!isset($properties['trantype'])) {
+			$properties['trantype'] = Payment::TRAN_TYPE_AUTH;
+		}
+		
+		if ($paymentDao) {
+			return $paymentDao->createPayment($properties);
+		}
+
+		return new PaymentStandard($properties);
+	}
+	
+	/**
 	 * @return \Cubes\Nestpay\Payment
 	 */
 	public function getWorkingPayment() {
@@ -249,7 +271,7 @@ class MerchantService {
 		}
 		
 		if (!($workingPayment instanceof Payment)) {
-			$workingPayment = new Payment($workingPayment);
+			$workingPayment = $this->createPayment($workingPayment);
 		}
 		
 		$this->workingPayment = $workingPayment;
@@ -395,7 +417,7 @@ class MerchantService {
 		}
 		
 		$workingPayment = $this->getWorkingPayment();
-		
+
 		$clientId = $this->getClientId();
 		$oid = $workingPayment->getOid();
 		$amount = $workingPayment->getAmount();
@@ -435,7 +457,7 @@ class MerchantService {
 				'oid' => $oid,
 				'amount' => $amount,
 				'TranType' => $trantype,
-				'Instalment' => $instalment,
+				'Instalment' => $instalment ? $instalment : null,
 				'currency' => $currency,
 				'rnd' => $rnd,
 				'lang' => $workingPayment->getLang(),
@@ -551,7 +573,7 @@ class MerchantService {
 				}
 				
 			} catch(MerchantServiceException $ex) {
-				$workingPayment = new Payment(array_merge($responseData, [
+				$workingPayment = $this->createPayment(array_merge($responseData, [
 					'oid' => $oidFromResponse,
 					'processed' => 0
 				]));
@@ -661,6 +683,74 @@ class MerchantService {
 		}
 		
 		return $workingPayment;
+	}
+
+	/**
+	 * @param string|\Cubes\Nestpay\Payment $payment
+	 * @return mixed The result from api as array
+	 */
+	public function postAuthorizationOverNestpayApi($payment = null, $amount = null, $triggerEvents = true, $throwException = true)
+	{
+		if (!is_null($payment)) {
+			$this->setWorkingPayment($payment);
+		}
+
+		$workingPayment = $this->getWorkingPayment();
+
+		if (is_null($amount)) {
+			$amount = $workingPayment->getAmount();
+		}
+
+		try {
+			$nestpayApi = $this->getNestpayApi();
+			
+			$response = $nestpayApi->postAuthorization($workingPayment->getOid(), $amount);
+			
+			return $response;
+
+		} catch (\Exception $e) {
+			$this->lastError = $e;
+			
+			if ($triggerEvents) {
+				$this->triggerEvent('error');
+			}
+			
+			if ($throwException) {
+				throw $e;
+			}
+		}
+	}
+
+	/**
+	 * @param string|\Cubes\Nestpay\Payment $payment
+	 * @return mixed The result from api as array
+	 */
+	public function voidOverNestpayApi($payment = null, $triggerEvents = true, $throwException = true)
+	{
+		if (!is_null($payment)) {
+			$this->setWorkingPayment($payment);
+		}
+
+		$workingPayment = $this->getWorkingPayment();
+
+		try {
+			$nestpayApi = $this->getNestpayApi();
+			
+			$response = $nestpayApi->void($workingPayment->getOid());
+			
+			return $response;
+
+		} catch (\Exception $e) {
+			$this->lastError = $e;
+			
+			if ($triggerEvents) {
+				$this->triggerEvent('error');
+			}
+			
+			if ($throwException) {
+				throw $e;
+			}
+		}
 	}
 }
 

@@ -1,6 +1,5 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
-header('Content-Type: text/plain');
 
 $config = require __DIR__ . '/config.php';
 
@@ -21,7 +20,17 @@ $merchantService->onFailedPayment(function ($payment) {
 	echo $ex->getMessage();
 	echo $ex->getTraceAsString();
 });
-		
-$payment = $merchantService->paymentProcess3DGateResponse($_POST);
-print_r($payment);
 
+$oid = isset($_POST['oid']) ? $_POST['oid'] : '';
+?>
+<form method="post" action="">
+OID: <input type="text" name="oid" value="<?php echo htmlspecialchars($oid);?>">
+<button type="submit">Process</button>
+</form>
+<hr>
+<?php
+if ($oid) {
+$result = $merchantService->voidOverNestpayApi($oid);
+
+print_r($result);
+}

@@ -2,6 +2,9 @@ db:
     container_name: "${COMPOSE_PROJECT_NAME}_db"
     image: mariadb:latest
     env_file: .env
+    volumes:
+        - ../../:/opt/
+    working_dir: /opt
 webserver:
     container_name: "${COMPOSE_PROJECT_NAME}_webserver"
     image: cubesdoo/php

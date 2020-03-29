@@ -6,10 +6,14 @@
         {
             "name": "Aleksandar Dimic",
             "email": "aleksandar.dimic@cubes.rs"
+        },
+        {
+            "name": "Aleksa Cvijic",
+            "email": "aleksa.cvijic@cubes.rs"
         }
     ],
     "license": "GPL-3.0-or-later",
-    "keywords": ["nestpay", "php", "composer"],
+    "keywords": ["nestpay", "php", "composer", "laravel"],
     "homepage": "https://github.com/cubes-doo/nestpay",
     "require": {
         "php": ">=5.4",
@@ -18,6 +22,19 @@
     "autoload": {
         "psr-4": {
             "Cubes\\Nestpay\\": "src/"
+        }
+    },
+    "suggest": {
+        "illuminate/support": "Required to integrate with Laravel framework (^5.4)."
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Cubes\\Nestpay\\Laravel\\NestpayServiceProvider"
+            ],
+            "aliases": {
+                "Nestpay": "Cubes\\Nestpay\\Laravel\\Facade"
+            }
         }
     }
 }

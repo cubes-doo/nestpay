@@ -19,4 +19,12 @@ interface PaymentDao {
 	 * @return \Cubes\Nestpay\Payment
 	 */
 	public function savePayment(Payment $payment);
+
+	/**
+	 * Creates new payment
+	 *
+	 * @param array $properties
+	 * @return \Cubes\Nestpay\Payment
+	 */
+	public function createPayment(array $properties);
 }

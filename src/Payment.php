@@ -2,7 +2,7 @@
 
 namespace Cubes\Nestpay;
 
-class Payment implements \ArrayAccess, \JsonSerializable {
+interface Payment extends \ArrayAccess, \JsonSerializable {
 	
 	const TRAN_TYPE_AUTH = 'Auth';
 	const TRAN_TYPE_PREAUTH = 'PreAuth';
@@ -65,7 +65,7 @@ class Payment implements \ArrayAccess, \JsonSerializable {
 	const PROP_ERRMSG = 'ErrMsg';
 	const PROP_MDSTATUS = 'mdStatus';
 
-	protected static $allowedProperties = [
+	const ALLOWED_PROPERTIES = [
 		'processed',
 		'oid',
 		'trantype',
@@ -154,88 +154,17 @@ class Payment implements \ArrayAccess, \JsonSerializable {
 		'payResults.dsId',
 		'refreshtime',
 		'SettleId',
-	];
-	
-	public static function getAllowedProperties() {
-		return self::$allowedProperties;
-	}
+    ];
 	
 	/**
 	 * @return scalar
 	 */
-	public static function generateOid() {
-		//UUID 4
-		return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-			// 32 bits for "time_low"
-			mt_rand(0, 0xffff), mt_rand(0, 0xffff),
-			// 16 bits for "time_mid"
-			mt_rand(0, 0xffff),
-			// 16 bits for "time_hi_and_version",
-			// four most significant bits holds version number 4
-			mt_rand(0, 0x0fff) | 0x4000,
-			// 16 bits, 8 bits for "clk_seq_hi_res",
-			// 8 bits for "clk_seq_low",
-			// two most significant bits holds zero and one for variant DCE1.1
-			mt_rand(0, 0x3fff) | 0x8000,
-			// 48 bits for "node"
-			mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
-		);
-	}
+	public static function generateOid();
 	
 	/**
 	 * @return scalar
 	 */
-	public static function generateRnd() {
-		return mt_rand(1000000000, 2000000000);
-	}
-	
-	
-	/**
-	 * @var array 
-	 */
-	protected $properties;
-	
-	
-	//Payment methods
-	public function __construct(array $properties = null) {
-		$this->properties = [
-			'processed' => 0,
-			'oid' => self::generateOid(),
-			'rnd' => self::generateRnd(),
-			'currency' => self::DEFAULT_CURRENCY,
-			'lang' => self::DEFAULT_LANG,
-			'amount' => 0.01,
-			'trantype' => self::TRAN_TYPE_AUTH,
-		];
-		
-		if (is_array($properties)) {
-			$this->setProperties($properties);
-		}
-	}
-	
-	//JsonSeriazable methods
-	public function jsonSerialize() {
-		return $this->getProperties();
-	}
-
-	//ArrayAccess methods
-	public function offsetExists($offset) {
-		return array_key_exists($offset, $this->properties);
-	}
-
-	public function offsetGet($offset) {
-		return $this->getProperty($offset);
-	}
-
-	public function offsetSet($offset, $value) {
-		return $this->setProperty($offset, $value);
-	}
-
-	public function offsetUnset($offset) {
-		if (isset($this->properties[$offset])) {
-			unset($this->properties[$offset]);
-		}
-	}
+	public static function generateRnd();
 	
 	/**
 	 * 
@@ -244,304 +173,124 @@ class Payment implements \ArrayAccess, \JsonSerializable {
 	 * @return \Cubes\Nestpay\Payment
 	 * @throws \InvalidArgumentException
 	 */
-	public function setProperty($key, $value) {
-		$setter = 'set' . ucfirst($key);
-		if (method_exists($this, $setter)) {
-			return $this->$setter($value);
-		}
-		
-		if (!is_null($value) && !is_scalar($value)) {
-			throw new \InvalidArgumentException('Argument $value must be scalar got ' . (is_array($value) ? 'array' : (is_null($value) ? 'null' : get_class($value))));
-		}
-		
-		if (!in_array($key, self::$allowedProperties)) {
-			return $this;
-		}
-		
-		$this->properties[$key] = $value;
-		
-		return $this;
-	}
+	public function setProperty($key, $value);
 	
-	public function getProperty($key) {
-		$getter = 'get' . ucfirst($key);
-		if (method_exists($this, $getter)) {
-			return $this->$getter();
-		}
-		
-		return isset($this->properties[$key]) ? $this->properties[$key] : null;
-	}
+	public function getProperty($key);
 	
 	/** 
 	 * @param array $properties
 	 * @return \Cubes\Nestpay\Payment
 	 */
-	public function setProperties(array $properties) {
-		foreach ($properties as $key => $val) {
-			$this->setProperty($key, $val);
-		}
-		
-		return $this;
-	}
+	public function setProperties(array $properties);
 	
 	/**
 	 * @param array $keys
 	 * @param array $excludeKeys
 	 * @return array
 	 */
-	public function getProperties(array $keys = null, array $excludeKeys = null, $onlyNonEmpty = false) {
-		if (!is_array($keys)) {
-			$properties = $this->properties;
-		} else {
-		
-			$properties = [];
-
-			foreach ($keys as $key) {
-				$value = $this->getProperty($key);
-
-				$properties[$key] = $value;
-			}
-		}
-		
-		if ($excludeKeys) {
-			foreach ($excludeKeys as $key) {
-				unset($properties[$key]);
-			}
-		}
-		
-		if ($onlyNonEmpty) {
-			foreach ($properties as $key => $val) {
-				if (!is_numeric($val) && empty($val)) {
-					unset($properties[$key]);
-				}
-			}
-		}
-		
-		return $properties;
-	}
+	public function getProperties(array $keys = null, array $excludeKeys = null, $onlyNonEmpty = false);
 	
 	/**
 	 * @return array
 	 */
-	public function toArray() {
-		return $this->getProperties();
-	}
+	public function toArray();
 	
 	/**
 	 * @return scalar
 	 */
-	public function getOid() {
-		if (!isset($this->properties['oid'])) {
-			$this->properties['oid'] = self::generateOid();
-		}
-		
-		return $this->properties['oid'];
-	}
+	public function getOid();
 	
 	/**
 	 * @param salar $oid
 	 * @return \Cubes\Nestpay\Payment
 	 */
-	public function setOid($oid) {
-		if (!is_null($oid) && !is_scalar($oid)) {
-			throw new \InvalidArgumentException('Argument $oid must be scalar');
-		}
-		$this->properties['oid'] = $oid;
-		
-		return $this;
-	}
+	public function setOid($oid);
 	
 	/**
 	 * @return scalar
 	 */
-	public function getRnd() {
-		if (!isset($this->properties['rnd'])) {
-			$this->properties['rnd'] = self::generateRnd();
-		}
-		
-		return $this->properties['rnd'];
-	}
+	public function getRnd();
 	
 	/**
 	 * @param salar $rnd
 	 * @return \Cubes\Nestpay\Payment
 	 */
-	public function setRnd($rnd) {
-		if (!is_null($rnd) && !is_scalar($rnd)) {
-			throw new \InvalidArgumentException('Argument $rnd must be scalar');
-		}
-		$this->properties['rnd'] = $rnd;
-		
-		return $this;
-	}
+	public function setRnd($rnd);
 	
 	/**
 	 * @return scalar
 	 */
-	public function getCurrency() {
-		if (!isset($this->properties['currency'])) {
-			$this->properties['currency'] = self::DEFAULT_CURRENCY;
-		}
-		
-		return $this->properties['currency'];
-	}
+	public function getCurrency();
 	
 	/**
 	 * @param salar $currency
 	 * @return \Cubes\Nestpay\Payment
 	 */
-	public function setCurrency($currency) {
-		if (!is_null($currency) && !is_scalar($currency)) {
-			throw new \InvalidArgumentException('Argument $currency must be scalar');
-		}
-		$this->properties['currency'] = $currency;
-		
-		return $this;
-	}
+	public function setCurrency($currency);
 	
 	/**
 	 * @return scalar
 	 */
-	public function getLang() {
-		if (!isset($this->properties['lang'])) {
-			$this->properties['lang'] = self::DEFAULT_LANG;
-		}
-		
-		return $this->properties['lang'];
-	}
+	public function getLang();
 	
 	/**
 	 * @param salar $lang
 	 * @return \Cubes\Nestpay\Payment
 	 */
-	public function setLang($lang) {
-		if (!is_null($lang) && !is_scalar($lang)) {
-			throw new \InvalidArgumentException('Argument $lang must be scalar');
-		}
-		$this->properties['lang'] = $lang;
-		
-		return $this;
-	}
+	public function setLang($lang);
 	
 	/**
 	 * @return float
 	 */
-	public function getAmount() {
-		if (!isset($this->properties['amount'])) {
-			$this->properties['amount'] = 0.01;
-		}
-		
-		return $this->properties['amount'];
-	}
+	public function getAmount();
 	
 	/**
 	 * @param float $amount
 	 * @return \Cubes\Nestpay\Payment
 	 */
-	public function setAmount($amount) {
-		if (!is_null($amount) && (!is_numeric($amount) || $amount <= 0)) {
-			throw new \InvalidArgumentException('Argument $amount must be numeric greater than zero');
-		}
-		
-		$this->properties['amount'] = floatval($amount);
-		
-		return $this;
-	}
+	public function setAmount($amount);
 	
 	/**
 	 * @return scalar
 	 */
-	public function getTrantype() {
-		if (!isset($this->properties['trantype'])) {
-			$this->properties['trantype'] = self::TRAN_TYPE_AUTH;
-		}
-		
-		return $this->properties['trantype'];
-	}
+	public function getTrantype();
 	
 	/**
 	 * @param string $Trantype
 	 * @return \Cubes\Nestpay\Payment
 	 */
-	public function setTrantype($Trantype) {
-		if (!is_null($Trantype) && $Trantype != self::TRAN_TYPE_AUTH && $Trantype != self::TRAN_TYPE_PREAUTH) {
-			throw new \InvalidArgumentException('Argument $Trantype must be one of values: ' . self::TRAN_TYPE_AUTH . ' ' . self::TRAN_TYPE_PREAUTH);
-		}
-		
-		$this->properties['trantype'] = $Trantype;
-		
-		return $this;
-	}
+	public function setTrantype($Trantype);
 	
 	/**
 	 * @return scalar
 	 */
-	public function getInstalment() {
-		if (!isset($this->properties['instalment'])) {
-			$this->properties['instalment'] = '';
-		}
-		
-		return $this->properties['instalment'];
-	}
+	public function getInstalment();
 	
 	/**
 	 * @param scalar $instalment
 	 * @return \Cubes\Nestpay\Payment
 	 */
-	public function setInstalment($instalment) {
-		if (!is_null($instalment) && !is_scalar($instalment)) {
-			throw new \InvalidArgumentException('Argument $instalment must be scalar');
-		}
-		
-		$this->properties['instalment'] = intval($instalment);
-		
-		return $this;
-	}
+	public function setInstalment($instalment);
 	
 	/**
 	 * @return int
 	 */
-	public function getProcessed() {
-		if (!isset($this->properties['processed'])) {
-			$this->properties['processed'] = 0;
-		}
-		
-		return $this->properties['processed'];
-	}
+	public function getProcessed();
 	
 	/**
 	 * @param int $processed
 	 * @return \Cubes\Nestpay\Payment
 	 */
-	public function setProcessed($processed) {
-		$this->properties['processed'] = $processed ? 1 : 0;
-		
-		return $this;
-	}
+	public function setProcessed($processed);
 	
 	/**
 	 * @return boolean
 	 */
-	public function isProcessed() {
-		return $this->getProcessed() ? true : false;
-	}
+	public function isProcessed();
 	
 	/**
 	 * 
 	 * @return boolean
 	 */
-	public function isSuccess() {
-		$response = ucfirst(strtolower($this->getProperty('Response')));
-		$procReturnCode = $this->getProperty('ProcReturnCode');
-		$mdStatus = $this->getProperty('mdStatus');
-		
-		if (is_numeric($mdStatus) && !in_array(((int) $mdStatus), [1, 2, 3, 4, 7])) {
-			return false;
-		}
-		
-		return $response == self::RESPONSE_APPROVED && $procReturnCode == self::PROC_RESPONSE_CODE_APPROVED;
-	}
+	public function isSuccess();
 }
-
-
-//		

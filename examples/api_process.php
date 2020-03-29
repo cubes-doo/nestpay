@@ -1,17 +1,12 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
-header('Content-Type: text/plain');
-
 $config = require __DIR__ . '/config.php';
 
 $merchantService = new \Cubes\Nestpay\MerchantService($config);
 
-require __DIR__ . '/dao.php';
-$merchantService->setPaymentDao(new \PaymentDao('mysql:host=db;dbname=nestpay', 'root', 'root', [
-	PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
-	PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-]));
+$dao = require __DIR__ . '/dao.php';
+$merchantService->setPaymentDao($dao);
 
 $merchantService->onFailedPayment(function ($payment) {
 	echo "FAILED!";
@@ -26,8 +21,16 @@ $merchantService->onFailedPayment(function ($payment) {
 	echo $ex->getTraceAsString();
 });
 
-$oid = 'Enter the oid you want to test';
-
+$oid = isset($_POST['oid']) ? $_POST['oid'] : '';
+?>
+<form method="post" action="">
+OID: <input type="text" name="oid" value="<?php echo htmlspecialchars($oid);?>">
+<button type="submit">Process</button>
+</form>
+<hr>
+<?php
+if ($oid) {
 $payment = $merchantService->paymentProcessOverNestpayApi($oid);
 
 print_r($payment);
+}

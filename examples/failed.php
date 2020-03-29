@@ -6,11 +6,8 @@ $config = require __DIR__ . '/config.php';
 
 $merchantService = new \Cubes\Nestpay\MerchantService($config);
 
-require __DIR__ . '/dao.php';
-$merchantService->setPaymentDao(new \PaymentDao('mysql:host=db;dbname=nestpay', 'root', 'root', [
-	PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
-	PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-]));
+$dao = require __DIR__ . '/dao.php';
+$merchantService->setPaymentDao($dao);
 
 
 $merchantService->onFailedPayment(function ($payment) {
