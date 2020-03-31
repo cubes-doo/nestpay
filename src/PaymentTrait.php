@@ -212,9 +212,9 @@ trait PaymentTrait
 	 * @return boolean
 	 */
 	public function isSuccess() {
-		$response = ucfirst(strtolower($this->getProperty('Response')));
-		$procReturnCode = $this->getProperty('ProcReturnCode');
-		$mdStatus = $this->getProperty('mdStatus');
+		$response = ucfirst(strtolower($this->_getAttribute('Response')));
+		$procReturnCode = $this->_getAttribute('ProcReturnCode');
+		$mdStatus = $this->_getAttribute('mdStatus');
 		
 		if (is_numeric($mdStatus) && !in_array(((int) $mdStatus), [1, 2, 3, 4, 7])) {
 			return false;
