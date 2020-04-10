@@ -74,7 +74,7 @@ $merchantService->onFailedPayment(function ($payment) {
     // $customerName = $payment->getProperty(\Cubes\Nestpay\Payment::PROP_BILLTONAME);
 
 })->onSuccessfulPayment(function($payment) {
-	//$payment is instance of \Cubes\Nestpay\Payment
+    //$payment is instance of \Cubes\Nestpay\Payment
 
     //send an email for successful payment
     // $email = $payment->getProperty(\Cubes\Nestpay\Payment::PROP_EMAIL);
@@ -97,58 +97,58 @@ Use **\Cubes\Nestpay\MerchantService::paymentMakeRequestParameters** method to g
 <?php 
 
 $requestParameters = $nestpayMerchantService->paymentMakeRequestParameters([
-	'amount' =>  123.45,
-	'currency' => \Cubes\Nestpay\Payment::CURRENCY_RSD,
-	'lang' => 'sr',
-	\Cubes\Nestpay\Payment::PROP_TRANTYPE => \Cubes\Nestpay\Payment::TRAN_TYPE_PREAUTH,
-	\Cubes\Nestpay\Payment::PROP_EMAIL => 'john.doe@example.com',
-	\Cubes\Nestpay\Payment::PROP_BILLTONAME => 'John Doe',
-	//below are not mandatory parameters
-	\Cubes\Nestpay\Payment::PROP_BILLTOSTREET1 => 'BillToStreet1',
-	\Cubes\Nestpay\Payment::PROP_BILLTOSTREET2 => 'BillToStreet2',
-	\Cubes\Nestpay\Payment::PROP_BILLTOCITY => 'BillToCity',
-	\Cubes\Nestpay\Payment::PROP_BILLTOSTATEPROV => 'BillToStateProv',
-	\Cubes\Nestpay\Payment::PROP_BILLTOPOSTALCODE => 'BillToPostalCode',
-	\Cubes\Nestpay\Payment::PROP_BILLTOCOUNTRY => 'RS',
-	\Cubes\Nestpay\Payment::PROP_SHIPTOCOMPANY => 'ShipToCompany',
-	\Cubes\Nestpay\Payment::PROP_SHIPTONAME => 'ShipToName',
-	\Cubes\Nestpay\Payment::PROP_SHIPTOSTREET1 => 'ShipToStreet1',
-	\Cubes\Nestpay\Payment::PROP_SHIPTOSTREET2 => 'ShipToStreet2',
-	\Cubes\Nestpay\Payment::PROP_SHIPTOCITY => 'ShipToCity',
-	\Cubes\Nestpay\Payment::PROP_SHIPTOSTATEPROV => 'ShipToStateProv',
-	\Cubes\Nestpay\Payment::PROP_SHIPTOPOSTALCODE => 'ShipToPostalCode',
-	\Cubes\Nestpay\Payment::PROP_SHIPTOCOUNTRY => 'RS',
-	\Cubes\Nestpay\Payment::PROP_DIMCRITERIA1 => 'DimCriteria1',
-	\Cubes\Nestpay\Payment::PROP_DIMCRITERIA2 => 'DimCriteria2',
-	\Cubes\Nestpay\Payment::PROP_DIMCRITERIA3 => 'DimCriteria3',
-	\Cubes\Nestpay\Payment::PROP_DIMCRITERIA4 => 'DimCriteria4',
-	\Cubes\Nestpay\Payment::PROP_DIMCRITERIA5 => 'DimCriteria5',
-	\Cubes\Nestpay\Payment::PROP_DIMCRITERIA6 => 'DimCriteria6',
-	\Cubes\Nestpay\Payment::PROP_DIMCRITERIA7 => 'DimCriteria7',
-	\Cubes\Nestpay\Payment::PROP_DIMCRITERIA8 => 'DimCriteria8',
-	\Cubes\Nestpay\Payment::PROP_DIMCRITERIA9 => 'DimCriteria9',
-	\Cubes\Nestpay\Payment::PROP_DIMCRITERIA10 => 'DimCriteria10',
+    'amount' =>  123.45,
+    'currency' => \Cubes\Nestpay\Payment::CURRENCY_RSD,
+    'lang' => 'sr',
+    \Cubes\Nestpay\Payment::PROP_TRANTYPE => \Cubes\Nestpay\Payment::TRAN_TYPE_PREAUTH,
+    \Cubes\Nestpay\Payment::PROP_EMAIL => 'john.doe@example.com',
+    \Cubes\Nestpay\Payment::PROP_BILLTONAME => 'John Doe',
+    //below are not mandatory parameters
+    \Cubes\Nestpay\Payment::PROP_BILLTOSTREET1 => 'BillToStreet1',
+    \Cubes\Nestpay\Payment::PROP_BILLTOSTREET2 => 'BillToStreet2',
+    \Cubes\Nestpay\Payment::PROP_BILLTOCITY => 'BillToCity',
+    \Cubes\Nestpay\Payment::PROP_BILLTOSTATEPROV => 'BillToStateProv',
+    \Cubes\Nestpay\Payment::PROP_BILLTOPOSTALCODE => 'BillToPostalCode',
+    \Cubes\Nestpay\Payment::PROP_BILLTOCOUNTRY => 'RS',
+    \Cubes\Nestpay\Payment::PROP_SHIPTOCOMPANY => 'ShipToCompany',
+    \Cubes\Nestpay\Payment::PROP_SHIPTONAME => 'ShipToName',
+    \Cubes\Nestpay\Payment::PROP_SHIPTOSTREET1 => 'ShipToStreet1',
+    \Cubes\Nestpay\Payment::PROP_SHIPTOSTREET2 => 'ShipToStreet2',
+    \Cubes\Nestpay\Payment::PROP_SHIPTOCITY => 'ShipToCity',
+    \Cubes\Nestpay\Payment::PROP_SHIPTOSTATEPROV => 'ShipToStateProv',
+    \Cubes\Nestpay\Payment::PROP_SHIPTOPOSTALCODE => 'ShipToPostalCode',
+    \Cubes\Nestpay\Payment::PROP_SHIPTOCOUNTRY => 'RS',
+    \Cubes\Nestpay\Payment::PROP_DIMCRITERIA1 => 'DimCriteria1',
+    \Cubes\Nestpay\Payment::PROP_DIMCRITERIA2 => 'DimCriteria2',
+    \Cubes\Nestpay\Payment::PROP_DIMCRITERIA3 => 'DimCriteria3',
+    \Cubes\Nestpay\Payment::PROP_DIMCRITERIA4 => 'DimCriteria4',
+    \Cubes\Nestpay\Payment::PROP_DIMCRITERIA5 => 'DimCriteria5',
+    \Cubes\Nestpay\Payment::PROP_DIMCRITERIA6 => 'DimCriteria6',
+    \Cubes\Nestpay\Payment::PROP_DIMCRITERIA7 => 'DimCriteria7',
+    \Cubes\Nestpay\Payment::PROP_DIMCRITERIA8 => 'DimCriteria8',
+    \Cubes\Nestpay\Payment::PROP_DIMCRITERIA9 => 'DimCriteria9',
+    \Cubes\Nestpay\Payment::PROP_DIMCRITERIA10 => 'DimCriteria10',
 ]);
 ?>
 <html>
-	<body>
-		<pre>
-			<code>
-				<?php print_r($merchantService->getWorkingPayment());?>
-			</code>
-		</pre>
-		<form method="post" action="<?php echo $merchantService->get3DGateUrl();?>">
-			<?php foreach ($requestParameters as $key => $value) {?>
-			<input type="hidden" name="<?php echo htmlspecialchars($key);?>"  value="<?php echo htmlspecialchars($value);?>">
-			<?php }?>
-			<input type="submit" value="Start payment">
-		</form>
-	</body>
+    <body>
+        <pre>
+            <code>
+                <?php print_r($merchantService->getWorkingPayment());?>
+            </code>
+        </pre>
+        <form method="post" action="<?php echo $merchantService->get3DGateUrl();?>">
+            <?php foreach ($requestParameters as $key => $value) {?>
+            <input type="hidden" name="<?php echo htmlspecialchars($key);?>"  value="<?php echo htmlspecialchars($value);?>">
+            <?php }?>
+            <input type="submit" value="Start payment">
+        </form>
+    </body>
 </html>
 ?>
 ```
 
-After submitting this form customer is redirected to 3D gate bank card processing page where custoer enters Card Number, CVC etc.
+After submitting this form customer is redirected to 3D gate bank card processing page where customer enters Card Number, CVC etc.
 
 #### The result page
 
@@ -170,7 +170,7 @@ $payment = $nestpayMerchantService->paymentProcess3DGateResponse($_POST);
 
 ```
 
-On faile page:
+On fail page:
 
 ```php
 <?php
@@ -238,33 +238,33 @@ use \Cubes\Nestpay\Payment;
 class MyPaymentDao implements PaymentDao
 {
     /**
-	 * Fetch payment by $oid
-	 * 
-	 * @return \Cubes\Nestpay\Payment
-	 * @param scalar $oid
-	 */
+     * Fetch payment by $oid
+     * 
+     * @return \Cubes\Nestpay\Payment
+     * @param scalar $oid
+     */
     public function getPayment($oid)
     {
         //return payment by oid
     }
-	
-	/**
-	 * Saves the payment
-	 * 
-	 * @param \Cubes\Nestpay\Payment $payment
-	 * @return \Cubes\Nestpay\Payment
-	 */
+    
+    /**
+     * Saves the payment
+     * 
+     * @param \Cubes\Nestpay\Payment $payment
+     * @return \Cubes\Nestpay\Payment
+     */
     public function savePayment(Payment $payment)
     {
         //save existing payment
     }
 
-	/**
-	 * Creates new payment
-	 *
-	 * @param array $properties
-	 * @return \Cubes\Nestpay\Payment
-	 */
+    /**
+     * Creates new payment
+     *
+     * @param array $properties
+     * @return \Cubes\Nestpay\Payment
+     */
     public function createPayment(array $properties)
     {
         //create new payment
