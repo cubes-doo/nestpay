@@ -8,14 +8,24 @@ class PaymentDaoPdo implements PaymentDao
      * @var \PDO
      */
     protected $pdo;
+
+    protected $tableName = 'nestpay_payments';
     
-    public function __construct(\PDO $pdo)
+    public function __construct(\PDO $pdo, $tableName = null)
     {
         if ($pdo) {
             $this->setPdo($pdo); 
         }
+
+        if ($tableName) {
+            $this->setTableName($tableName);
+        }
     }
 
+    /**
+     * @param \PDO $pdo
+     * @return PaymentDaoPdo
+     */
     public function setPdo(\PDO $pdo)
     {
         $this->pdo = $pdo;
@@ -35,6 +45,29 @@ class PaymentDaoPdo implements PaymentDao
         return $this->pdo;
     }
 
+    /**
+     * The table name for transactions
+     *
+     * @return string
+     */
+    public function getTableName()
+    {
+        return $this->tableName;
+    }
+
+    /**
+     * @param string $tableName
+     * @return PaymentDaoPdo
+     */
+    public function setTableName($tableName)
+    {
+        if (!is_string($tableName) || empty($tableName)) {
+            throw new \InvalidArgumentException('Argument $tableName must be non empty string');
+        }
+
+        return $this;
+    }
+
 	/**
 	 * Fetch payment by $oid
 	 * 
@@ -45,7 +78,7 @@ class PaymentDaoPdo implements PaymentDao
     {
         $pdo = $this->getPdo();
 
-        $statement = $pdo->prepare('SELECT * FROM `nestpay_payments` WHERE `oid` = :oid');
+        $statement = $pdo->prepare('SELECT * FROM `' . $this->getTableName() . '` WHERE `oid` = :oid');
 
         $statement->execute([
             ':oid' => $oid
@@ -79,7 +112,7 @@ class PaymentDaoPdo implements PaymentDao
         $properties = $payment->getProperties();
         $properties['updated_at'] = date('Y-m-d H:i:s');
 
-        $sql = 'UPDATE `nestpay_payments` SET ';
+        $sql = 'UPDATE `' . $this->getTableName() . '` SET ';
 
         $setPart = [];
 
@@ -106,6 +139,14 @@ class PaymentDaoPdo implements PaymentDao
 	 */
     public function createPayment(array $properties)
     {
+        if (!isset($properties[Payment::PROP_OID])) {
+            $properties[Payment::PROP_OID] = PaymentStandard::generateOid();
+        }
+
+        if (!isset($properties[Payment::PROP_TRANTYPE])) {
+            $properties[Payment::PROP_TRANTYPE] = Payment::TRAN_TYPE_AUTH;
+        }
+
         foreach ($properties as $key => $value) {
             if (!in_array($key, Payment::ALLOWED_PROPERTIES)) {
                 unset($properties[$key]);
@@ -117,7 +158,7 @@ class PaymentDaoPdo implements PaymentDao
 
         $pdo = $this->getPdo();
 
-        $sql = 'INSERT INTO `nestpay_payments`';
+        $sql = 'INSERT INTO `' . $this->getTableName() . '`';
 
         $columnsPart = [];
         $valuesPart = [];

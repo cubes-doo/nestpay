@@ -1,14 +1,6 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
-
-$config = require __DIR__ . '/config.php';
-($config);
-
-$merchantService = new \Cubes\Nestpay\MerchantService($config);
-
-$dao = require __DIR__ . '/dao.php';
-$merchantService->setPaymentDao($dao);
+require __DIR__ . '/bootstrap.php';
 
 $r = rand(1000, 9999);
 

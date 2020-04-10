@@ -32,6 +32,11 @@ class NestpayServiceProvider extends ServiceProvider
             __DIR__ . '/../../laravel/app/Models' => app_path('Models'),
         ], 'models');
 
+        //mails
+        $this->publishes([
+            __DIR__ . '/../../laravel/app/Mail' => app_path('Mail'),
+        ], 'mails');
+
         //listeners
         $this->publishes([
             __DIR__ . '/../../laravel/app/Listeners' => app_path('Listeners'),
@@ -43,6 +48,17 @@ class NestpayServiceProvider extends ServiceProvider
                 NestpayHandleUnprocessedPaymentCommand::class,
             ]);
         }
+
+        //views
+        $this->loadViewsFrom(__DIR__.'/../../laravel/resources/views', 'nestpay');
+        $this->publishes([
+            __DIR__ . '/../../laravel/resources/views' => resource_path('views/vendor'),
+        ], 'views');
+
+        //controllers
+        $this->publishes([
+            __DIR__ . '/../../laravel/app/Http/Controllers' => app_path('Http/Controllers'),
+        ], 'controllers');
     }
 
     /**

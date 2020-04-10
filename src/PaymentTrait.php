@@ -139,6 +139,27 @@ trait PaymentTrait
         
 		return $this;
 	}
+
+	/**
+	 * @return float
+	 */
+	public function getEmail() {
+        return $this->_getAttribute('email');
+	}
+	
+	/**
+	 * @param float $email
+	 * @return \Cubes\Nestpay\Payment
+	 */
+	public function setEmail($email) {
+		if (!is_string($email) || empty($email)) {
+			throw new \InvalidArgumentException('Argument $email must be non empty string');
+		}
+		
+        $this->_setAttribute('email', $email);
+        
+		return $this;
+	}
 	
 	/**
 	 * @return scalar

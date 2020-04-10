@@ -23,7 +23,11 @@ class PaymentModel extends Model implements Payment
 	 * @throws \InvalidArgumentException
 	 */
 	public function setProperty($key, $value) {
-        
+		
+		if (!in_array($key, Payment::ALLOWED_PROPERTIES)) {
+			return $this;
+		}
+
         $this->setAttribute($key, $value);
 		return $this;
 	}
@@ -90,7 +94,7 @@ class PaymentModel extends Model implements Payment
         $attr = $this->getAttribute($key);
 
         if (is_null($attr) && !is_null($defaultValue)) {
-            $this->SetAttribute($key, $defaultValue);
+            $this->setProperty($key, $defaultValue);
 
             $attr = $defaultValue;
         }

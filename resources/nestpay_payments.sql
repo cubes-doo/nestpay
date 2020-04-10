@@ -104,7 +104,6 @@ CREATE TABLE IF NOT EXISTS `nestpay_payments` (
   `HASHPARAMS` varchar(255) DEFAULT NULL,
   `HASHPARAMSVAL` varchar(255) DEFAULT NULL,
   `okurl` varchar(255) DEFAULT NULL,
-  `payResults.dsId` varchar(255) DEFAULT NULL,
   `refreshtime` varchar(255) DEFAULT NULL,
   `SettleId` varchar(255) DEFAULT NULL,
 

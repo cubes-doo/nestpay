@@ -6,7 +6,7 @@ use Cubes\Nestpay\Laravel\PaymentModel as Model;
 
 class NestpayPayment extends Model
 {
-    protected $table = 'nestpay_payments';
+    /*protected $table = 'nestpay_payments';
 
     protected $fillable = [
 		'processed',
@@ -94,8 +94,7 @@ class NestpayPayment extends Model
 		'HASHPARAMS',
 		'HASHPARAMSVAL',
 		'okurl',
-		'payResults.dsId',
 		'refreshtime',
 		'SettleId',
-    ];
+    ];*/
 }

@@ -138,6 +138,8 @@ class MerchantService {
 				$this->setMerchantConfig($value);
 			} else if ($key == 'paymentDao') {
 				$this->setPaymentDao($value);
+			} else if ($key == 'pdo') {
+				$this->setPDO($value);
 			} else if ($key == 'workingPayment') {
 				$this->setWorkingPayment($value);
 			} else if ($key == 'onSuccessfulPayment') {
@@ -203,6 +205,19 @@ class MerchantService {
 		$this->paymentDao = $paymentDao;
 		return $this;
 	}
+
+	/**
+	 * Create payment dao using existing PDO connection
+	 *
+	 * @param \PDO $pdo
+	 * @param string $tableName
+	 * @return \Cubes\Nestpay\MerchantService
+	 */
+	public function setPDO($pdo, $tableName = null)
+	{
+		$this->setPaymentDao(new PaymentDaoPdo($pdo, $tableName));
+		return $this;
+	}
 	
 	/**
 	 * @param scalar $oid
@@ -234,16 +249,17 @@ class MerchantService {
 	protected function createPayment($properties) {
 		$paymentDao = $this->getPaymentDao();
 		
+		
+		if ($paymentDao) {
+			return $paymentDao->createPayment($properties);
+		}
+
 		if (!isset($properties['oid'])) {
 			$properties['oid'] = PaymentStandard::generateOid();
 		}
 
 		if (!isset($properties['trantype'])) {
 			$properties['trantype'] = Payment::TRAN_TYPE_AUTH;
-		}
-		
-		if ($paymentDao) {
-			return $paymentDao->createPayment($properties);
 		}
 
 		return new PaymentStandard($properties);
@@ -268,6 +284,10 @@ class MerchantService {
 		if (is_scalar($workingPayment)) {
 			//got scalar, assume $workingPayment is oid 
 			$workingPayment = $this->loadPayment($workingPayment);
+
+			if (is_null($workingPayment)) {
+				return $this;
+			}
 		}
 		
 		if (!($workingPayment instanceof Payment)) {
@@ -560,16 +580,21 @@ class MerchantService {
 				
 				foreach ($responseData as $key => $value) {
 					if (in_array($key, $responseMandatoryFields)) {
-						$workingPayment[$key] = $value;
+						//force set mandatory fields
+						$workingPayment->setProperty($key, $value);
 						continue;
 					}
+
+					//for other fields just check if they are not set
+					//to avoid overriding initial setup of email and other fields
+					$property = $workingPayment->getProperty($key);
 					
-					if (isset($workingPayment[$key]) && (is_numeric($workingPayment[$key]) || !empty($workingPayment[$key]))) {
+					if (isset($property) && (is_numeric($property) || !empty($property))) {
 						
 						continue;
 					}
 					
-					$workingPayment[$key] = $value;
+					$workingPayment->setProperty($key, $value);
 				}
 				
 			} catch(MerchantServiceException $ex) {

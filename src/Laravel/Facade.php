@@ -10,4 +10,14 @@ class Facade extends BaseFacade
     {
         return 'nestpay';
     }
+
+    public static function routes()
+    {
+        \Route::prefix('/nestpay')->group(function () {
+            \Route::get('/confirm', 'NestpayController@confirment')->name('nestpay.confirment');
+            \Route::post('/confirm', 'NestpayController@confirm')->name('nestpay.confirm');
+            \Route::post('/success', 'NestpayController@success')->name('nestpay.success');
+            \Route::post('/fail', 'NestpayController@fail')->name('nestpay.fail');
+        });
+    }
 }

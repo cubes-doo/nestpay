@@ -89,9 +89,16 @@ class PaymentDaoEloquent implements PaymentDao
     {
         $newPayment = clone $this->getPaymentModel();
 
+        if (!isset($properties[Payment::PROP_OID])) {
+            $properties[Payment::PROP_OID] = $newPayment::generateOid();
+        }
+
+        if (!isset($properties[Payment::PROP_TRANTYPE])) {
+            $properties[Payment::PROP_TRANTYPE] = Payment::TRAN_TYPE_AUTH;
+        }
+
         $newPayment->fill($properties);
         $newPayment->save();
-        
 
         return $newPayment;
     }

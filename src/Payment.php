@@ -11,8 +11,12 @@ interface Payment extends \ArrayAccess, \JsonSerializable {
 	const PROC_RESPONSE_CODE_APPROVED = '00';
 	
 	const CURRENCY_EURO = '978';
-	const CURRENCY_RSD = '941';
+	const CURRENCY_EUR = '978';
 	const CURRENCY_USD = '840';
+	const CURRENCY_GBP = '826';
+	const CURRENCY_CNY = '156';
+	const CURRENCY_RUB = '643';
+	const CURRENCY_RSD = '941';
 	
 	const DEFAULT_LANG = 'en';
 	const DEFAULT_CURRENCY = '840';
@@ -151,7 +155,7 @@ interface Payment extends \ArrayAccess, \JsonSerializable {
 		'HASHPARAMS',
 		'HASHPARAMSVAL',
 		'okurl',
-		'payResults.dsId',
+		//'payResults.dsId'
 		'refreshtime',
 		'SettleId',
     ];
@@ -249,6 +253,17 @@ interface Payment extends \ArrayAccess, \JsonSerializable {
 	 * @return \Cubes\Nestpay\Payment
 	 */
 	public function setAmount($amount);
+	
+	/**
+	 * @return string
+	 */
+	public function getEmail();
+	
+	/**
+	 * @param float $email
+	 * @return \Cubes\Nestpay\Payment
+	 */
+	public function setEmail($email);
 	
 	/**
 	 * @return scalar
