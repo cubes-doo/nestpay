@@ -310,12 +310,12 @@ Make **\Cubes\Nestpay\MerchantService** use your DAO class
 $nestpayMerchantService->setPaymentDao(new MyPaymentDao());
 ```
 
-##Integration with Laravel Framework(>=5.4)
+## Integration with Laravel Framework(>=5.4)
 
 Package `cubes-doo/nestpay` comes with built Laravel package.
 
 Service provider class is **\Cubes\Nestpay\Laravel\NestpayServiceProvider**.
-######If you are using Laravel version < 5.5 you must include service provider manually
+###### If you are using Laravel version < 5.5 you must include service provider manually
 
 ```php
 <?php
@@ -385,7 +385,7 @@ For unprocessed payments (when customer does not navigate back to your site afte
 php artisan nestpay:handle-unprocessed-payments
 ```
 
-###Laravel resources (config, controllers, views , etc)
+### Laravel resources (config, controllers, views , etc)
 
 Although you could integrate Nestpay service into your Laravel application manually, this Laravel package has all you need to integrate Nestpay system.
 
