@@ -14,6 +14,17 @@ class PaymentModel extends Model implements Payment
     protected $table = 'nestpay_payments';
 	
 	protected $fillable = Payment::ALLOWED_PROPERTIES;
+
+	/**
+	 * Return model instance by oid
+	 *
+	 * @param string $oid
+	 * @return PaymentModel
+	 */
+	public function findByOid($oid)
+	{
+		return $this->where('oid', $oid)->first();
+	}
 	
 	/**
 	 * 

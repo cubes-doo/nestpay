@@ -23,7 +23,7 @@ return [
 
     //The class of the eloquen model which must implement \Cubes\Netpay\Payment interface
     //If set ti null the PDO will be used on table nestpay_payments
-    'paymentModel' => \App\Models\NestpayPayment::class,
+    'paymentModel' => \Cubes\Nestpay\Laravel\PaymentModel::class,
 
     //nestpay::handle-unprocessed-payments command settings
 

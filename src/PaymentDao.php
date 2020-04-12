@@ -2,9 +2,7 @@
 
 namespace Cubes\Nestpay;
 
-interface PaymentDao {
-	
-	/**
+interface PaymentDao {/**
 	 * Fetch payment by $oid
 	 * 
 	 * @return \Cubes\Nestpay\Payment
@@ -27,4 +25,6 @@ interface PaymentDao {
 	 * @return \Cubes\Nestpay\Payment
 	 */
 	public function createPayment(array $properties);
+	
+	
 }

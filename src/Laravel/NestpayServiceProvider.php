@@ -69,7 +69,7 @@ class NestpayServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../../laravel/config/nestpay.php', 'nestpay'
+            __DIR__ . '/../../laravel/config/nestpay_default.php', 'nestpay'
         );
         
         //Register MerchantService in laravel

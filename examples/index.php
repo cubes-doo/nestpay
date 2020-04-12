@@ -8,14 +8,17 @@ $requestParameters = $merchantService->paymentMakeRequestParameters([
 	'amount' =>  $r / 100,
 	'currency' => \Cubes\Nestpay\Payment::CURRENCY_RSD,
 	'lang' => 'sr',
-	\Cubes\Nestpay\Payment::PROP_TRANTYPE => \Cubes\Nestpay\Payment::TRAN_TYPE_PREAUTH,
-	\Cubes\Nestpay\Payment::PROP_ENCODING => 'encoding',
+	//set transaction type to PreAuth or Auth
+    \Cubes\Nestpay\Payment::PROP_TRANTYPE => \Cubes\Nestpay\Payment::TRAN_TYPE_PREAUTH,
+	//this is email of the customer
+    \Cubes\Nestpay\Payment::PROP_EMAIL => 'email-' . $r,
+	
+	\Cubes\Nestpay\Payment::PROP_INVOICENUMBER => $r, //MUST BE NUMBER!!!
 	\Cubes\Nestpay\Payment::PROP_DESCRIPTION => 'description-' . $r,
 	\Cubes\Nestpay\Payment::PROP_COMMENTS => 'comments-' . $r,
-	\Cubes\Nestpay\Payment::PROP_EMAIL => 'email-' . $r,
 	\Cubes\Nestpay\Payment::PROP_TEL => 'tel-' . $r,
-	\Cubes\Nestpay\Payment::PROP_BILLTOCOMPANY => 'BillToCompany-' . $r,
 	\Cubes\Nestpay\Payment::PROP_BILLTONAME => 'BillToName-' . $r,
+	\Cubes\Nestpay\Payment::PROP_BILLTOCOMPANY => 'BillToCompany-' . $r,
 	\Cubes\Nestpay\Payment::PROP_BILLTOSTREET1 => 'BillToStreet1-' . $r,
 	\Cubes\Nestpay\Payment::PROP_BILLTOSTREET2 => 'BillToStreet2-' . $r,
 	\Cubes\Nestpay\Payment::PROP_BILLTOCITY => 'BillToCity-' . $r,

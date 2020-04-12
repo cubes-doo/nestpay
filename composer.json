@@ -12,11 +12,11 @@
             "email": "aleksa.cvijic@cubes.rs"
         }
     ],
-    "license": "GPL-3.0-or-later",
+    "license": "MIT",
     "keywords": ["nestpay", "php", "composer", "laravel"],
     "homepage": "https://github.com/cubes-doo/nestpay",
     "require": {
-        "php": ">=5.4",
+        "php": ">=5.6",
 		"ext-curl": "*"
     },
     "autoload": {
