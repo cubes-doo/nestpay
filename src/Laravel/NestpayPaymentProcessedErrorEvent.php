@@ -26,7 +26,7 @@ class NestpayPaymentProcessedErrorEvent
      *
      * @return void
      */
-    public function __construct(Payment $payment, \Throwable $exception)
+    public function __construct(Payment $payment = null, \Throwable $exception = null)
     {
         $this->payment = $payment;
 

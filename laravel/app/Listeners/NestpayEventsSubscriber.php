@@ -48,7 +48,7 @@ class NestpayEventsSubscriber
      * Error processing payment
      */
     public function nestpayPaymentProcessedErrorEvent(NestpayPaymentProcessedErrorEvent $event) {
-        $payment = $event->getPayment();
+        $payment = $event->getPayment(); //COULD BE NULL!!!
         $ex = $event->getException();
     }
 

@@ -289,6 +289,14 @@ class MerchantService {
 				return $this;
 			}
 		}
+
+		else if (is_array($workingPayment) && isset($workingPayment['oid'])) {
+			$workingPayment = $this->loadPayment($workingPayment['oid']);
+
+			if (is_null($workingPayment)) {
+				return $this;
+			}
+		}
 		
 		if (!($workingPayment instanceof Payment)) {
 			$workingPayment = $this->createPayment($workingPayment);
@@ -440,7 +448,7 @@ class MerchantService {
 
 		$clientId = $this->getClientId();
 		$oid = $workingPayment->getOid();
-		$amount = $workingPayment->getAmount();
+		$amount = number_format($workingPayment->getAmount(), 2, '.', '');
 		$okUrl = $this->getOkUrl();
 		$failUrl = $this->getFailUrl();
 		$trantype = $workingPayment->getTrantype();
