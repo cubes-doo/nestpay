@@ -426,9 +426,9 @@ return [
 
 ```php
 //file: app/Providers/EventServiceProvider.php
-
+    use App\Listeners\NestpayEventsSubscriber;
     protected $subscribe = [
-        'App\Listeners\NestpayEventsSubscriber',
+        NestpayEventsSubscriber::class,
     ];
 ```
 
