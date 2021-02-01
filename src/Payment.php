@@ -2,14 +2,15 @@
 
 namespace Cubes\Nestpay;
 
-interface Payment extends \ArrayAccess, \JsonSerializable {
-	
+interface Payment extends \ArrayAccess, \JsonSerializable
+{
+
 	const TRAN_TYPE_AUTH = 'Auth';
 	const TRAN_TYPE_PREAUTH = 'PreAuth';
-	
+
 	const RESPONSE_APPROVED = 'Approved';
 	const PROC_RESPONSE_CODE_APPROVED = '00';
-	
+
 	const CURRENCY_EURO = '978';
 	const CURRENCY_EUR = '978';
 	const CURRENCY_USD = '840';
@@ -17,10 +18,11 @@ interface Payment extends \ArrayAccess, \JsonSerializable {
 	const CURRENCY_CNY = '156';
 	const CURRENCY_RUB = '643';
 	const CURRENCY_RSD = '941';
-	
+	const CURRENCY_MKD = '807';
+
 	const DEFAULT_LANG = 'en';
 	const DEFAULT_CURRENCY = '840';
-	
+
 	//Helper constants for properties
 	const PROP_TRANTYPE = 'trantype';
 	const PROP_AMOUNT = 'amount';
@@ -60,8 +62,8 @@ interface Payment extends \ArrayAccess, \JsonSerializable {
 	const PROP_DIMCRITERIA9 = 'DimCriteria9';
 	const PROP_DIMCRITERIA10 = 'DimCriteria10';
 	const PROP_INVOICENUMBER = 'INVOICENUMBER';
-	
-	
+
+
 	const PROP_RESPONSE = 'Response';
 	const PROP_AUTHCODE = 'AuthCode';
 	const PROP_PROCRETURNCODE = 'ProcReturnCode';
@@ -138,7 +140,7 @@ interface Payment extends \ArrayAccess, \JsonSerializable {
 		'clientid',
 		'EXTRA_TRXDATE',
 		'comments',
-		
+
 		'ACQBIN',
 		'acqStan',
 		'cavvAlgorithm',
@@ -158,18 +160,18 @@ interface Payment extends \ArrayAccess, \JsonSerializable {
 		//'payResults.dsId'
 		'refreshtime',
 		'SettleId',
-    ];
-	
+	];
+
 	/**
 	 * @return scalar
 	 */
 	public static function generateOid();
-	
+
 	/**
 	 * @return scalar
 	 */
 	public static function generateRnd();
-	
+
 	/**
 	 * 
 	 * @param string $key
@@ -178,131 +180,131 @@ interface Payment extends \ArrayAccess, \JsonSerializable {
 	 * @throws \InvalidArgumentException
 	 */
 	public function setProperty($key, $value);
-	
+
 	public function getProperty($key);
-	
+
 	/** 
 	 * @param array $properties
 	 * @return \Cubes\Nestpay\Payment
 	 */
 	public function setProperties(array $properties);
-	
+
 	/**
 	 * @param array $keys
 	 * @param array $excludeKeys
 	 * @return array
 	 */
 	public function getProperties(array $keys = null, array $excludeKeys = null, $onlyNonEmpty = false);
-	
+
 	/**
 	 * @return array
 	 */
 	public function toArray();
-	
+
 	/**
 	 * @return scalar
 	 */
 	public function getOid();
-	
+
 	/**
 	 * @param salar $oid
 	 * @return \Cubes\Nestpay\Payment
 	 */
 	public function setOid($oid);
-	
+
 	/**
 	 * @return scalar
 	 */
 	public function getRnd();
-	
+
 	/**
 	 * @param salar $rnd
 	 * @return \Cubes\Nestpay\Payment
 	 */
 	public function setRnd($rnd);
-	
+
 	/**
 	 * @return scalar
 	 */
 	public function getCurrency();
-	
+
 	/**
 	 * @param salar $currency
 	 * @return \Cubes\Nestpay\Payment
 	 */
 	public function setCurrency($currency);
-	
+
 	/**
 	 * @return scalar
 	 */
 	public function getLang();
-	
+
 	/**
 	 * @param salar $lang
 	 * @return \Cubes\Nestpay\Payment
 	 */
 	public function setLang($lang);
-	
+
 	/**
 	 * @return float
 	 */
 	public function getAmount();
-	
+
 	/**
 	 * @param float $amount
 	 * @return \Cubes\Nestpay\Payment
 	 */
 	public function setAmount($amount);
-	
+
 	/**
 	 * @return string
 	 */
 	public function getEmail();
-	
+
 	/**
 	 * @param float $email
 	 * @return \Cubes\Nestpay\Payment
 	 */
 	public function setEmail($email);
-	
+
 	/**
 	 * @return scalar
 	 */
 	public function getTrantype();
-	
+
 	/**
 	 * @param string $Trantype
 	 * @return \Cubes\Nestpay\Payment
 	 */
 	public function setTrantype($Trantype);
-	
+
 	/**
 	 * @return scalar
 	 */
 	public function getInstalment();
-	
+
 	/**
 	 * @param scalar $instalment
 	 * @return \Cubes\Nestpay\Payment
 	 */
 	public function setInstalment($instalment);
-	
+
 	/**
 	 * @return int
 	 */
 	public function getProcessed();
-	
+
 	/**
 	 * @param int $processed
 	 * @return \Cubes\Nestpay\Payment
 	 */
 	public function setProcessed($processed);
-	
+
 	/**
 	 * @return boolean
 	 */
 	public function isProcessed();
-	
+
 	/**
 	 * 
 	 * @return boolean
