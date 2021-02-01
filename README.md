@@ -1,4 +1,5 @@
 # Cubes Nestpay
+
 Nestpay E-commerce integration, shipped with Laravel Package
 
 [![Latest Stable Version](https://poser.pugx.org/cubes-doo/nestpay/v/stable)](https://packagist.org/packages/cubes-doo/nestpay) [![Total Downloads](https://poser.pugx.org/cubes-doo/nestpay/downloads)](https://packagist.org/packages/cubes-doo/nestpay) [![License](https://poser.pugx.org/cubes-doo/nestpay/license)](https://packagist.org/packages/cubes-doo/nestpay)
@@ -22,8 +23,7 @@ You could create table by importing example SQL script:
 mysql -u root -p your_db_name < vendor/cubes-doo/nestpay/resources/nestpay_payments.sql
 ```
 
-*If you are using Laravel there is a ready to use migration (see documentation below)
-
+\*If you are using Laravel there is a ready to use migration (see documentation below)
 
 ### Bootstrap & Configuration
 
@@ -52,13 +52,11 @@ $nestpayMerchantService = new MerchantService([
 
 ```
 
-
 Setup the connection to the database by using existing PDO instance
 
 ```php
 $nestpayMerchantService->setPDO($pdo); //$pdo is instanceof \PDO
 ```
-
 
 If you want to have some other name for the **nestpay_payments** table, something you should pass another parameter
 
@@ -98,6 +96,7 @@ For that reason it is important to write your logic, like sending email or chang
 ### Usage
 
 #### The confirmation page
+
 You should have confirmation page from which customers are redirected to the bank card processor page.
 
 That page should have form with lots of hidden paramters.
@@ -105,7 +104,7 @@ That page should have form with lots of hidden paramters.
 Use **\Cubes\Nestpay\MerchantService::paymentMakeRequestParameters** method to generate necessary parameters (the HASH parameter and other necessary parameters)
 
 ```php
-<?php 
+<?php
 
 $requestParameters = $nestpayMerchantService->paymentMakeRequestParameters([
     'amount' =>  123.45,
@@ -115,7 +114,7 @@ $requestParameters = $nestpayMerchantService->paymentMakeRequestParameters([
     \Cubes\Nestpay\Payment::PROP_TRANTYPE => \Cubes\Nestpay\Payment::TRAN_TYPE_PREAUTH,
     //this is email of the customer
     \Cubes\Nestpay\Payment::PROP_EMAIL => 'john.doe@example.com',
-    
+
     //below are optional parameters
     \Cubes\Nestpay\Payment::PROP_INVOICENUMBER => '123456789', //must be numeric!!
     \Cubes\Nestpay\Payment::PROP_BILLTONAME => 'John Doe',\Cubes\Nestpay\Payment::PROP_BILLTOSTREET1 => 'BillToStreet1',
@@ -168,7 +167,7 @@ After submitting this form customer is redirected to 3D gate bank card processin
 
 After entering Card details, customer is redirected back to your website on success or fail url.
 
-You should call **\Cubes\Nestpay\MerchantService::paymentProcess3DGateResponse** method to process $_POST parameters.
+You should call **\Cubes\Nestpay\MerchantService::paymentProcess3DGateResponse** method to process $\_POST parameters.
 
 On success page:
 
@@ -189,7 +188,7 @@ On fail page:
 ```php
 <?php
 //second parameter (true) indicates that this processing is on fail url
-$payment = $nestpayMerchantService->paymentProcess3DGateResponse($_POST, true); 
+$payment = $nestpayMerchantService->paymentProcess3DGateResponse($_POST, true);
 
 //display resultsu of the payment:
 ?>
@@ -206,7 +205,7 @@ You should use **\Cubes\Nestpay\MerchantService::paymentProcessOverNestpayApi** 
 
 ```php
 //$oid is the OID of some unprocessed payment (WHERE `processed` != 1)
-$payment = $nestpayMerchantService->paymentProcessOverNestpayApi($oid); 
+$payment = $nestpayMerchantService->paymentProcessOverNestpayApi($oid);
 
 //DO NOT SEND EMAIL HERE OR DO SOME ACTION ON SUCCESSFUL PAYMENT!
 //USE $nestpayMerchantService->onSuccessfulPayment INSTEAD!!!
@@ -221,23 +220,24 @@ Use **\Cubes\Nestpay\MerchantService::postAuthorizationOverNestpayApi**
 
 ```php
 //$oid is the OID of the payment
-$result = $nestpayMerchantService->postAuthorizationOverNestpayApi($oid); 
+$result = $nestpayMerchantService->postAuthorizationOverNestpayApi($oid);
 ```
 
 If you DO NOT want to capture entire amount, pass second parameter.
+
 ```php
 //$oid is the OID of the payment
 //$amount should not be greated than the orginal amount reserved in PreAuth
-$result = $nestpayMerchantService->postAuthorizationOverNestpayApi($oid, $amount); 
+$result = $nestpayMerchantService->postAuthorizationOverNestpayApi($oid, $amount);
 ```
 
-#### Void payment  over API
+#### Void payment over API
 
 To void payment use **\Cubes\Nestpay\MerchantService::voidOverNestpayApi**
 
 ```php
 //$oid is the OID of the payment
-$result = $nestpayMerchantService->voidOverNestpayApi($oid); 
+$result = $nestpayMerchantService->voidOverNestpayApi($oid);
 ```
 
 ### Get working payment
@@ -246,7 +246,7 @@ If you want to get the last processed payment use **\Cubes\Nestpay\MerchantServi
 
 ```php
 
-//$payment is instance of \Cubes\Nestpay\Payment 
+//$payment is instance of \Cubes\Nestpay\Payment
 $payment = $nestpayMerchantService->getWorkingPayment();
 
 //get some of the payment properties
@@ -256,7 +256,6 @@ $email = $payment->getProperty(\Cubes\Nestpay\Payment::PROPERTY_EMAIL);
 $email = $payment->getEmail();
 
 ```
-
 
 ### Customize saving payment information
 
@@ -271,7 +270,7 @@ class MyPaymentDao implements PaymentDao
 {
     /**
      * Fetch payment by $oid
-     * 
+     *
      * @return \Cubes\Nestpay\Payment
      * @param scalar $oid
      */
@@ -279,10 +278,10 @@ class MyPaymentDao implements PaymentDao
     {
         //return payment by oid
     }
-    
+
     /**
      * Saves the payment
-     * 
+     *
      * @param \Cubes\Nestpay\Payment $payment
      * @return \Cubes\Nestpay\Payment
      */
@@ -315,6 +314,7 @@ $nestpayMerchantService->setPaymentDao(new MyPaymentDao());
 Package `cubes-doo/nestpay` comes with built Laravel package.
 
 Service provider class is **\Cubes\Nestpay\Laravel\NestpayServiceProvider**.
+
 ###### If you are using Laravel version < 5.5 you must include service provider manually
 
 ```php
@@ -322,7 +322,7 @@ Service provider class is **\Cubes\Nestpay\Laravel\NestpayServiceProvider**.
 //THIS IS config/app.php
 
 return [
-    
+
     //got to providers key
     // ...
 
@@ -341,14 +341,17 @@ return [
 ```
 
 Before using the \Cubes\Nestpay\MerchantService class you should **edit your .env file**:
+
 ```shell
 #add this to your .env file and set you clientID storeKey etc
 NESTPAY_MERCHANT_CLIENT_ID=********
 NESTPAY_MERCHANT_STORE_KEY=********
-NESTPAY_MERCHANT_3DGATE_URL=https://testsecurepay.eway2pay.com/fim/est3Dgate
+NESTPAY_MERCHANT_3D_GATE_URL=https://testsecurepay.eway2pay.com/fim/est3Dgate
+NESTPAY_MERCHANT_STORE_TYPE=3D_PAY_HOSTING
 NESTPAY_MERCHANT_API_NAME=*******
 NESTPAY_MERCHANT_API_PASSWORD=*******
 NESTPAY_MERCHANT_API_ENDPOINT_URL=https://testsecurepay.eway2pay.com/fim/api
+
 ```
 
 The package provides **\Cubes\Nestpay\MerchantService** class which could be injected in controllers and other points in Laravel application:
@@ -402,14 +405,16 @@ php artisan vendor:publish --provider="Cubes\\Nestpay\\Laravel\\NestpayServicePr
 //file: config/nestpay.php
 return [
     'merchant' => [/* the mercant configuration*/],
-   
+
     //change this if you want to use some other class for payment model
     //Object of paymentModel class is going to be returned when calling MerchantService::getWorkingPayment
-     'paymentModel' => \App\Models\NestpayPayment::class 
+     'paymentModel' => \App\Models\NestpayPayment::class
     //...
 ];
 ```
+
 3. Add Nestpay routes among others
+
 ```php
 //file: routes/web.php
 
@@ -421,13 +426,14 @@ return [
 
 ```php
 //file: app/Providers/EventServiceProvider.php
-
+    use App\Listeners\NestpayEventsSubscriber;
     protected $subscribe = [
-        'App\Listeners\NestpayEventsSubscriber',
+        NestpayEventsSubscriber::class,
     ];
 ```
 
 5. Customize published migration for `nestpay_payment` table
+
 ```php
 //file: database/migrations/2020_03_27_144802_create_nestpay_payments_table.php
 
@@ -461,9 +467,10 @@ class NestpayPayment extends Model
         //DO NOT REMOVE ANY FILLABLES JUST ADD NEW ONE FOOUR APPLICATION
         'processed',
         'oid',
-        'trantype', 
+        'trantype',
         //...
 ```
+
 7. Customize controller **\App\Http\Controllers\NestpayController**
 
 ```php
@@ -508,12 +515,12 @@ class VerifyCsrfToken extends Middleware
 8. Customize view scripts
 
 ```
-resources   
+resources
 │
 └───views
 │   │
 │   └───vendor
-│       │   
+│       │
 │       │───nestpay
 │       |       │
 │       |       │    confirm.blade.php
@@ -531,7 +538,7 @@ class Kernel extends ConsoleKernel
 {
     //...
 
-    
+
     protected function schedule(Schedule $schedule)
     {
         //...
@@ -540,9 +547,10 @@ class Kernel extends ConsoleKernel
 
     //...
 ```
-10. Customize listener **\App\Listeners\NestpayEventsSubscriber** 
 
-**IMPORTANT NOTICE!!!** 
+10. Customize listener **\App\Listeners\NestpayEventsSubscriber**
+
+**IMPORTANT NOTICE!!!**
 
 THIS IS THE MOST IMPORTANT CUSTOMIZATION!!!
 
@@ -551,7 +559,7 @@ When payment is processed (eather over NestpayController or nestpay::handle-unpr
 - \Cubes\Nestpay\Laravel\NestpayPaymentProcessedSuccessfullyEvent - for successful payments
 - \Cubes\Nestpay\Laravel\NestpayPaymentProcessedFailedEvent - for failed events
 
-At this point you should have the published event subscriber **\App\Listeners\NestpayEventsSubscriber**  which is configured to listen to those events.
+At this point you should have the published event subscriber **\App\Listeners\NestpayEventsSubscriber** which is configured to listen to those events.
 
 The class has logic for sending necessary mail to the customer, all you have to do is add logic when payment has been successfull (when custmer HAS PAID)
 
@@ -579,4 +587,3 @@ class NestpayEventsSubscriber
 
     //...
 ```
-
