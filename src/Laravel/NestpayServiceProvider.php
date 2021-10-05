@@ -45,7 +45,7 @@ class NestpayServiceProvider extends ServiceProvider
         //console
         if ($this->app->runningInConsole()) {
             $this->commands([
-                NestpayHandleUnprocessedPaymentCommand::class,
+                NestpayHandleUnprocessedPaymentsCommand::class,
             ]);
         }
 

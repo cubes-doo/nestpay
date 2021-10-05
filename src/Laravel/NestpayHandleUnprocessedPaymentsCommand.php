@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 
 use Cubes\Nestpay\MerchantService;
 
-class NestpayHandleUnprocessedPaymentCommand extends Command
+class NestpayHandleUnprocessedPaymentsCommand extends Command
 {
     /**
      * The name and signature of the console command.
