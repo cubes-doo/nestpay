@@ -71,7 +71,7 @@ class NestpayHandleUnprocessedPaymentsCommand extends Command
                 continue;
             }
         
-            $merchantService->paymentProcessOverNestpayApi($unprocessedPaymentModel->toNestpayPaymentObject());
+            $merchantService->paymentProcessOverNestpayApi($unprocessedPaymentModel);
             
             sleep($unprocessedApiCallTimeout);
         }
