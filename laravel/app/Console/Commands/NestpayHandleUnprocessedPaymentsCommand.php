@@ -1,13 +1,11 @@
 <?php
 
-namespace Cubes\Nestpay\Laravel;
+namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
 use Cubes\Nestpay\MerchantService;
-/**
- * @deprecated Instead publish the command from service provider and customize it there
- */
+
 class NestpayHandleUnprocessedPaymentsCommand extends Command
 {
     /**

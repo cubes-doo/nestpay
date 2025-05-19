@@ -21,7 +21,7 @@ class NestpayServiceProvider extends ServiceProvider
         ], 'config');
 
         //migrations
-        $this->loadMigrationsFrom(__DIR__.'/../../laravel/database/migrations');
+        //$this->loadMigrationsFrom(__DIR__.'/../../laravel/database/migrations');
 
         $this->publishes([
             __DIR__ . '/../../laravel/database/migrations' => database_path('migrations'),
@@ -43,14 +43,17 @@ class NestpayServiceProvider extends ServiceProvider
         ], 'listeners');
         
         //console
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                NestpayHandleUnprocessedPaymentsCommand::class,
-            ]);
-        }
+        $this->publishes([
+            __DIR__ . '/../../laravel/app/Console/Commands' => app_path('Console/Commands'),
+        ], 'commands');
+        //if ($this->app->runningInConsole()) {
+        //    $this->commands([
+        //        NestpayHandleUnprocessedPaymentsCommand::class,
+        //    ]);
+        //}
 
         //views
-        $this->loadViewsFrom(__DIR__.'/../../laravel/resources/views', 'nestpay');
+        //$this->loadViewsFrom(__DIR__.'/../../laravel/resources/views', 'nestpay');
         $this->publishes([
             __DIR__ . '/../../laravel/resources/views' => resource_path('views/vendor'),
         ], 'views');
