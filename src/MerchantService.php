@@ -493,6 +493,14 @@ class MerchantService {
 				'hash' => $hash,
 			]
 		);
+
+		if (!empty($instalment)) {
+			$formParameters['Instalment'] = $instalment;
+		} else {
+			//Remove instalment if it is empty because it should not be passed
+			//in order for Intesa debit card installment to work properly on hosted payment page
+			unset($formParameters['Instalment']);
+		}
 		
 		$this->savePayment($workingPayment);
 		
